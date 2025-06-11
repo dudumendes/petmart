@@ -4,6 +4,7 @@ import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.ModelType;
 import com.mendes.petmart.model.Tokenizer;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,14 +48,13 @@ public class ProductClassifierController {
         var tokens = Tokenizer.countTokens(system, prompt);
         System.out.println("Number of tokens: " + tokens);
 
-
-
         return this.chatClient.prompt()
                 .system(system)
                 .user(prompt)
                 .options(ChatOptions.builder()
                         .temperature(0.5)
                         .build())
+                .advisors(new SimpleLoggerAdvisor())
                 .call()
                 .content();
     }
