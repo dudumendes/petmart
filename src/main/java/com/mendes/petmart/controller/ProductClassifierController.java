@@ -14,7 +14,11 @@ public class ProductClassifierController {
 
     public ProductClassifierController(
             ChatClient.Builder chatClientBuilder) {
-        this.chatClient = chatClientBuilder.build();
+        this.chatClient = chatClientBuilder
+                .defaultOptions(ChatOptions.builder()
+                        .model("gpt-4o-mini")
+                        .build())
+                .build();
     }
 
     @GetMapping
