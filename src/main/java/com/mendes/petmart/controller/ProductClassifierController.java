@@ -1,8 +1,10 @@
 package com.mendes.petmart.controller;
 
+import com.knuddels.jtokkit.Encodings;
+import com.knuddels.jtokkit.api.ModelType;
+import com.mendes.petmart.model.Tokenizer;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.chat.prompt.DefaultChatOptionsBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +25,6 @@ public class ProductClassifierController {
 
     @GetMapping
     public String classify(String prompt) {
-//        var system = "You are product categorizer and should answer only the category's name of the product";
 
         var system = """
                 You are product categorizer and should answer only the category's name of the product
@@ -42,6 +43,11 @@ public class ProductClassifierController {
                 prompt: color ball
                 answer: Pet Toys
                 """;
+
+        var tokens = Tokenizer.countTokens(system, prompt);
+        System.out.println("Number of tokens: " + tokens);
+
+
 
         return this.chatClient.prompt()
                 .system(system)
